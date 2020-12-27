@@ -1,0 +1,10 @@
+{
+    "python.pythonPath": "~/anaconda3/envs/mxnet/bin/python",
+    "python.analysis.extraPaths": [
+        "/home/zhuyuanxiang/PycharmProjects/Dive-into-Deep-Learning/src/python/"
+    ],
+    "python.autoComplete.extraPaths": [
+        "/home/zhuyuanxiang/PycharmProjects/Dive-into-Deep-Learning/src/python/"
+    ],
+    "jupyter.notebookFileRoot": "${workspaceFolder}"
+}
