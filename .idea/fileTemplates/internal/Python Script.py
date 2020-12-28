@@ -15,10 +15,9 @@
 @理解：
 """
 from mxnet import nd
-from tools import beep_end
+from tools import beep_end, show_subtitle
 
 
-# ----------------------------------------------------------------------
 # ----------------------------------------------------------------------
 def main():
     pass
@@ -30,4 +29,4 @@ def main():
 if __name__ == '__main__':
     # 运行结束的提醒
     main()
-    tools.beep_end()
+    beep_end()
