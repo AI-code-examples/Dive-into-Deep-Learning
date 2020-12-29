@@ -27,6 +27,6 @@ def main():
 
 
 if __name__ == '__main__':
-    # 运行结束的提醒
     main()
+    # 运行结束的提醒
     beep_end()
