@@ -18,12 +18,13 @@
 3.  权重误差可以通过 Gluon 的 wd 超参数来指定
 4.  可以定义多个 Trainer 实例对不同的模型参数使用不同的迭代方法
 ToDo：为什么要对不同的模型参数使用不同的迭代方法？
+ToDo:Answer: 可以多头训练？
 """
 import d2lzh as d2l
-
 from mxnet import autograd, gluon, init, nd
-from mxnet.gluon import data as gdata, loss as gloss, nn
-from tools import beep_end, show_subtitle, show_figures
+from mxnet.gluon import data as gdata, nn
+
+from tools import beep_end, show_figures
 
 
 # ----------------------------------------------------------------------
