@@ -45,3 +45,22 @@ def beep_end():
     else:
         winsound.Beep(frequency, duration)
     pass
+
+
+def show_figures():
+    import matplotlib.pyplot as plt
+    # 运行结束前显示存在的图形
+    if len(plt.get_fignums()) != 0:
+        plt.show()
+    pass
+
+
+def get_root_path():
+    # 提供项目路径
+    import os
+    return os.path.dirname(__file__) + "\\"
+
+
+if __name__ == '__main__':
+    show_title("program begin")
+    get_root_path()
