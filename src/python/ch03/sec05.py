@@ -16,17 +16,17 @@
 1.  Fashion-MNIST 是 10 分类的服饰数据集
 2.  高和宽分别为 $h$ 和 $w$ 像素的图像的形状记为：$h\times w$ 或 $(h,w)$
 """
-from mxnet import nd
-from tools import beep_end, show_subtitle
-from mxnet.gluon import data as gdata
-import sys
 import time
-from matplotlib import pyplot as plt
+
 import d2lzh as d2l
+from mxnet.gluon import data as gdata
+
+from tools import beep_end, show_figures
 
 
 # ----------------------------------------------------------------------
 def main():
+    # d2l.load_data_fashion_mnist 与 gdata.vision.FashionMNIST() 下载的路径不同
     mnist_train = gdata.vision.FashionMNIST(train=True)
     mnist_test = gdata.vision.FashionMNIST(train=False)
     # print_dataset(mnist_test, mnist_train)
@@ -80,5 +80,4 @@ if __name__ == '__main__':
     main()
     # 运行结束的提醒
     beep_end()
-    if len(plt.get_fignums()) > 0:
-        plt.show()
+    show_figures()
