@@ -13,11 +13,14 @@
 @Reference  :   《动手学深度学习》
 @Desc       :   Sec 4.3 模型参数的延后初始化
 @小结：
+1.  延后初始化：系统在得到足够信息后才对模型参数进行初始化
+2.  延后初始化的优点：模型构造更加简单
+3.  强制描述模型参数的形状可以对模型立即进行初始化
 """
-import d2lzh as d2l
 
-from mxnet import autograd, gluon, init, nd
-from mxnet.gluon import data as gdata, loss as gloss, nn
+from mxnet import init, nd
+from mxnet.gluon import nn
+
 from tools import beep_end, show_subtitle, show_figures, show_title
 
 
