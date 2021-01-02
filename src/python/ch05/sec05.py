@@ -13,6 +13,8 @@
 @Reference  :   《动手学深度学习》
 @Desc       :   Sec 5.5 卷积神经网络（LeNet）
 @小结：
+1.  卷积神经网络就是含有卷积层的网络
+2.  LeNet 就是交替使用卷积层和最大池化层，输出使用全连接层，来进行图像分类的网络模型
 """
 import d2lzh as d2l
 import mxnet as mx
