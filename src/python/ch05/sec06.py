@@ -82,23 +82,23 @@ def create_net():
     net = nn.Sequential()
     # 使用 11x11 窗口来捕获物体，使用步幅 4 来缩小输出的高与宽
     # 增加通道数来停留图片中的不同信息
-    net.add(nn.Conv2D(96, kernel_size=11, strides=4, activation='relu'),
+    net.add(nn.Conv2D(32, kernel_size=11, strides=4, activation='relu'),
             nn.MaxPool2D(pool_size=3, strides=2))
     # 使用 5x5 窗口来捕获细节，使用填充 2 来保持输入与输出的高与宽不变
     # 增加通道数来停留图片中的不同信息
-    net.add(nn.Conv2D(256, kernel_size=5, padding=2, activation='relu'),
+    net.add(nn.Conv2D(128, kernel_size=5, padding=2, activation='relu'),
             nn.MaxPool2D(pool_size=3, strides=2))
     # 使用 3x3 窗口来捕获纹理，使用填充 1 来保持输入与输出的高与宽不变
     # 增加通道数来停留图片中的不同信息
     # 连续三层总面积层保证纹理信息能够被提取出来
-    net.add(nn.Conv2D(384, kernel_size=3, padding=1, activation='relu'),
-            nn.Conv2D(384, kernel_size=3, padding=1, activation='relu'),
-            nn.Conv2D(384, kernel_size=3, padding=1, activation='relu'),
+    net.add(nn.Conv2D(192, kernel_size=3, padding=1, activation='relu'),
+            nn.Conv2D(192, kernel_size=3, padding=1, activation='relu'),
+            nn.Conv2D(192, kernel_size=3, padding=1, activation='relu'),
             nn.MaxPool2D(pool_size=3, strides=2))
     # 两个连续的全连接层可以捕获全局的信息
     # 使用丢弃层来缓解过拟合
-    net.add(nn.Dense(4096, activation='relu'), nn.Dropout(0.5),
-            nn.Dense(4096, activation='relu'), nn.Dropout(0.5))
+    net.add(nn.Dense(2048, activation='relu'), nn.Dropout(0.5),
+            nn.Dense(2048, activation='relu'), nn.Dropout(0.5))
     net.add(nn.Dense(10))
     return net
 
