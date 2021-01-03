@@ -25,12 +25,10 @@ from tools import beep_end, show_subtitle, show_title, show_figures
 
 
 # ----------------------------------------------------------------------
-def mnist_alexnet():
-    batch_size = 128
+def mnist_alexnet(ctx, net):
+    lr, num_epochs, batch_size = 0.01, 5, 128
     # 出现 「out of memory」的错误信息时，可以减小 batch_size 或者 resize 的值
     train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size=batch_size, resize=224)
-    lr, num_epochs, ctx = 0.01, 5, d2l.try_gpu()
-    net = create_net()
     net.initialize(init=init.Xavier(), ctx=ctx, force_reinit=True)
     trainer = gluon.Trainer(net.collect_params(), 'sgd', {'learning_rate': lr})
     d2l.train_ch5(net, train_iter, test_iter, batch_size, trainer, ctx, num_epochs)
@@ -38,10 +36,12 @@ def mnist_alexnet():
 
 
 def main():
-    # toy_alexnet()
+    net = create_net()
+    ctx = d2l.try_gpu()
+    toy_alexnet(ctx, net)
     # Nvidia RTX 2060 比 Intel i7-9700 快 50 倍
     # 与 sec05(LeNet)对比可知，参数数量越多的模型，CPU与GPU计算的差距越大
-    mnist_alexnet()
+    mnist_alexnet(ctx, net)
     pass
 
 
@@ -67,38 +67,38 @@ def load_data_fashion_mnist(batch_size, resize=None, root=d2l.os.path.join('-', 
     return train_iter, test_iter
 
 
-def toy_alexnet():
-    ctx = d2l.try_gpu()
-    X = nd.random.uniform(shape=(1, 1, 224, 224), ctx=ctx)
+def toy_alexnet(ctx, net):
+    X = nd.random.uniform(shape=(2, 1, 224, 224), ctx=ctx)
     print("X.shape:\t", X.shape)
-    net = create_net()
     net.initialize(ctx=ctx)
     for layer in net:
         X = layer(X)
         print(layer.name, 'output shape:\t', X.shape)
+        pass
+    pass
 
 
 def create_net():
     net = nn.Sequential()
     # 使用 11x11 窗口来捕获物体，使用步幅 4 来缩小输出的高与宽
     # 增加通道数来停留图片中的不同信息
-    net.add(nn.Conv2D(32, kernel_size=11, strides=4, activation='relu'),
+    net.add(nn.Conv2D(96, kernel_size=11, strides=4, activation='relu'),
             nn.MaxPool2D(pool_size=3, strides=2))
     # 使用 5x5 窗口来捕获细节，使用填充 2 来保持输入与输出的高与宽不变
     # 增加通道数来停留图片中的不同信息
-    net.add(nn.Conv2D(128, kernel_size=5, padding=2, activation='relu'),
+    net.add(nn.Conv2D(256, kernel_size=5, padding=2, activation='relu'),
             nn.MaxPool2D(pool_size=3, strides=2))
     # 使用 3x3 窗口来捕获纹理，使用填充 1 来保持输入与输出的高与宽不变
     # 增加通道数来停留图片中的不同信息
     # 连续三层总面积层保证纹理信息能够被提取出来
-    net.add(nn.Conv2D(192, kernel_size=3, padding=1, activation='relu'),
-            nn.Conv2D(192, kernel_size=3, padding=1, activation='relu'),
-            nn.Conv2D(192, kernel_size=3, padding=1, activation='relu'),
+    net.add(nn.Conv2D(384, kernel_size=3, padding=1, activation='relu'),
+            nn.Conv2D(384, kernel_size=3, padding=1, activation='relu'),
+            nn.Conv2D(384, kernel_size=3, padding=1, activation='relu'),
             nn.MaxPool2D(pool_size=3, strides=2))
     # 两个连续的全连接层可以捕获全局的信息
     # 使用丢弃层来缓解过拟合
-    net.add(nn.Dense(2048, activation='relu'), nn.Dropout(0.5),
-            nn.Dense(2048, activation='relu'), nn.Dropout(0.5))
+    net.add(nn.Dense(4096, activation='relu'), nn.Dropout(0.5),
+            nn.Dense(4096, activation='relu'), nn.Dropout(0.5))
     net.add(nn.Dense(10))
     return net
 
