@@ -55,7 +55,7 @@ def create_net():
 
 
 def mnist_nin(ctx, net):
-    lr, num_epochs, batch_size = 0.05, 15, 128
+    lr, num_epochs, batch_size = 0.1, 25, 128
     train_iter, test_iter = d2l.load_data_fashion_mnist(batch_size=batch_size, resize=224)
     net.initialize(init=init.Xavier(), ctx=ctx, force_reinit=True)
     trainer = gluon.Trainer(net.collect_params(), 'sgd', {'learning_rate': lr})
@@ -63,7 +63,7 @@ def mnist_nin(ctx, net):
 
 
 def toy_nin(ctx, net):
-    X = nd.random.uniform(shape=(2, 1, 224, 224), ctx=ctx)
+    X = nd.random.uniform(shape=(1, 1, 224, 224), ctx=ctx)
     print("X.shape:\t", X.shape)
     net.initialize(ctx=ctx)
     for layer in net:
