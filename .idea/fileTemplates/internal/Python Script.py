@@ -12,10 +12,13 @@
 @License    :   (C)Copyright 2018-2020, zYx.Tom
 @Reference  :   《动手学深度学习》
 @Desc       :   Sec
-@理解：
+@小结：
 """
-from mxnet import nd
-from tools import beep_end, show_subtitle
+import d2lzh as d2l
+import mxnet as mx
+from mxnet import autograd, gluon, init, nd
+from mxnet.gluon import data as gdata, loss as gloss, nn
+from tools import beep_end, show_subtitle, show_title, show_figures
 
 
 # ----------------------------------------------------------------------
@@ -30,3 +33,4 @@ if __name__ == '__main__':
     main()
     # 运行结束的提醒
     beep_end()
+    show_figures()

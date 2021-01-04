@@ -130,3 +130,6 @@ dmypy.json
 .history/
 d2l-zh/
 src/python/tmp.py
+/src/python/ch04/x1
+/src/python/ch04/x1y1
+/src/python/ch04/mlp.params
