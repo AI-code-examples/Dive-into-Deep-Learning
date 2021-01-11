@@ -139,8 +139,8 @@ def train_and_predict_rnn(rnn, get_params, init_rnn_state, num_hiddens, vocab_si
 
 def grad_clipping(params, theta, ctx):
     """
-    6.4.5 裁剪梯度函数：避免梯度误差或者梯度爆炸，将所有模型参数梯度的元素拼接成一个向量 g，裁剪后梯度的 $L_2$ 范数小于 $\theta$
-    $\min(\frac{\theta}{||g||},1)g
+    6.4.5 裁剪梯度函数：$\min(\frac{\theta}{||g||},1)g
+    避免梯度误差或者梯度爆炸，将所有模型参数梯度的元素拼接成一个向量 g，裁剪后梯度的 $L_2$ 范数小于 $\theta$
     """
     norm = nd.array([0], ctx)
     for param in params:
