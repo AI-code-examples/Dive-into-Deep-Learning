@@ -37,8 +37,6 @@ def main():
         def _one(shape):
             return nd.random.normal(scale=0.01, shape=shape, ctx=ctx)
 
-        pass
-
         def _three():
             return (_one((num_inputs, num_hiddens)),
                     _one((num_hiddens, num_hiddens)),
