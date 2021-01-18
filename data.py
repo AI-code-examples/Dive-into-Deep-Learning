@@ -18,16 +18,14 @@
 import d2lzh as d2l
 import mxnet as mx
 import zipfile
-from mxnet import autograd, gluon, init, nd
+
+import numpy as np
+from mxnet import autograd, gluon, init, nd, ndarray
 from mxnet.gluon import data as gdata, loss as gloss, nn
 from tools import beep_end, show_subtitle, show_title, show_figures, get_root_path
 
 
 # ----------------------------------------------------------------------
-def main():
-    pass
-
-
 def load_data_jay_lyrics():
     """Load the Jay Chou lyric data set (available in the Chinese book)."""
     with zipfile.ZipFile(get_root_path() + 'data/jaychou_lyrics.txt.zip') as zin:
@@ -43,10 +41,7 @@ def load_data_jay_lyrics():
 
 
 # ----------------------------------------------------------------------
-
-
-if __name__ == '__main__':
-    main()
-    # 运行结束的提醒
-    beep_end()
-    show_figures()
+def get_data_ch7():
+    data = np.genfromtxt(get_root_path() + "data/airfoil_self_noise.dat", delimiter='\t')
+    data = (data - data.mean(axis=0)) / data.std(axis=0)
+    return nd.array(data[:1500, :-1]), nd.array(data[:1500, -1])

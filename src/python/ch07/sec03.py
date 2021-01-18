@@ -20,11 +20,12 @@
 import time
 
 import d2lzh as d2l
-import mxnet as mx
 import numpy as np
 from mxnet import autograd, gluon, init, nd
 from mxnet.gluon import data as gdata, loss as gloss, nn
-from tools import beep_end, show_subtitle, show_title, show_figures, get_root_path
+
+from data import get_data_ch7
+from tools import beep_end, show_figures
 
 
 # ----------------------------------------------------------------------
@@ -117,12 +118,6 @@ def sgd(params, states, hyperparams):
         p[:] -= hyperparams['lr'] * p.grad
         pass
     pass
-
-
-def get_data_ch7():
-    data = np.genfromtxt(get_root_path() + "data/airfoil_self_noise.dat", delimiter='\t')
-    data = (data - data.mean(axis=0)) / data.std(axis=0)
-    return nd.array(data[:1500, :-1]), nd.array(data[:1500, -1])
 
 
 # ----------------------------------------------------------------------
