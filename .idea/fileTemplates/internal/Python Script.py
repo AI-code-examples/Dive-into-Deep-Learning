@@ -15,7 +15,9 @@
 @小结：
 """
 import d2lzh as d2l
+import data
 import mxnet as mx
+import numpy as np
 from mxnet import autograd, gluon, init, nd
 from mxnet.gluon import data as gdata, loss as gloss, nn
 from tools import beep_end, show_subtitle, show_title, show_figures
