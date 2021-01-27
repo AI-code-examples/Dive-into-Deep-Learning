@@ -20,7 +20,7 @@ import mxnet as mx
 import zipfile
 
 import numpy as np
-from mxnet import autograd, gluon, init, nd, ndarray
+from mxnet import autograd, gluon, image, init, nd, ndarray
 from mxnet.gluon import data as gdata, loss as gloss, nn
 from tools import beep_end, show_subtitle, show_title, show_figures, get_root_path
 
@@ -45,3 +45,7 @@ def get_data_ch7():
     data = np.genfromtxt(get_root_path() + "data/airfoil_self_noise.dat", delimiter='\t')
     data = (data - data.mean(axis=0)) / data.std(axis=0)
     return nd.array(data[:1500, :-1]), nd.array(data[:1500, -1])
+
+
+def get_image(filename):
+    return image.imread(get_root_path() + filename)
