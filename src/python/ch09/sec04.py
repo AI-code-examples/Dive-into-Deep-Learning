@@ -42,7 +42,7 @@ def main():
     # 如果设定好一组原图大小比 $s_1,s_2,\dot,s_n$ 和 一组生成框宽高比 $r_1,r_2,\dot,r_m$，那么会得到 $nm$ 个锚框，导致计算复杂度过高
     # 因此，只对包含 $s_1$ 和 $r_1$ 的组合感兴趣，即得到 $n+m-1$ 个锚框
     d2l.set_figsize()
-    img = data.get_image("data/img/catdog.jpg").asnumpy()
+    img = image.imread("../img/catdog.jpg").asnumpy()
     # d2l.show_images(img)
 
     h, w = img.shape[0:2]
@@ -110,10 +110,13 @@ def main():
     # 返回的结果有三项
     print("labels.shape=", len(labels))
     # 第一项是为每个锚框标注的 4 个偏移量，其中负类锚框（类别为0）的偏移量标注为0
+    print("每个锚框标注的 4 个偏移量".center(50,'-'))
     print("labels[0]=", labels[0])
     # 第二项是掩码变量，形状为（批量大小，锚框个数*4），用于过滤不关心的锚框的偏移量，按元素乘法，使之输出为 0
+    print("掩码变量，形状为（批量大小，锚框个数*4）".center(50,'-'))
     print("labels[1]=", labels[1])
     # 第三项表示锚框标的类别（0表示背景，其它的按顺序：1表示狗，2表示猫）
+    print("锚框标的类别（0表示背景，其它的按顺序：1表示狗，2表示猫）".center(50,'-'))
     print("labels[2]=", labels[2])
     # 第 0 个锚框虽然交并比最大的真实边界框的类别是狗，但是交并比小于阈值（默认为0.5），因此类别标注为背景
     # 第 4 个锚框虽然交并比最大的真实边界框的类别是猫，但是交并比小于阈值，因此类别标注为背景
