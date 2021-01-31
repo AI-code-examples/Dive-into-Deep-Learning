@@ -83,7 +83,7 @@ def main():
     finetune_net.output.collect_params().setattr('lr_mult', 10)
 
     # 3. 微调模型
-    def train_fine_tuning(net, learning_rate, batch_size=128, num_epochs=5):
+    def train_fine_tuning(net, learning_rate, batch_size=128, num_epochs=15):
         train_iter = gdata.DataLoader(train_imgs.transform_first(train_augs), batch_size, shuffle=True)
         test_iter = gdata.DataLoader(test_imgs.transform_first(test_augs), batch_size)
         ctx = d2l.try_gpu()
@@ -99,6 +99,8 @@ def main():
     scratch_net = model_zoo.vision.resnet18_v2(classes=2)
     scratch_net.initialize(init.Xavier())
     train_fine_tuning(scratch_net, 0.1)
+
+    # 微调模型因为参数初始值更好，往往在相同的迭代周期下取得更高的精度
     pass
 
 
