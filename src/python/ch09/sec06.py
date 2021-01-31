@@ -45,7 +45,7 @@ def load_data_pikachu(batch_size, edge_size=256):
     @param batch_size:
     @param edge_size: 输出图像的宽和高
     """
-    data_dir = data.get_root_path() + "data/pikachu"
+    data_dir = "../data/pikachu"
     _download_pikachu(data_dir)
     train_iter = image.ImageDetIter(
         path_imgrec=os.path.join(data_dir, 'train.rec'),
