@@ -27,6 +27,7 @@ from tools import beep_end, show_figures
 # ----------------------------------------------------------------------
 def main():
     # d2l.load_data_fashion_mnist 与 gdata.vision.FashionMNIST() 下载的路径不同
+    # gdata.vision.FashionMNIST() 使用的路径是 C:\Users\ygpfr\AppData\Roaming\mxnet\datasets\fashion-mnist
     mnist_train = gdata.vision.FashionMNIST(train=True)
     mnist_test = gdata.vision.FashionMNIST(train=False)
     # print_dataset(mnist_test, mnist_train)
