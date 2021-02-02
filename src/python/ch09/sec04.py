@@ -106,6 +106,7 @@ def main():
     # fig = d2l.plt.imshow(img)
     # show_bboxes(fig.axes, ground_truth[:, 1:] * bbox_scale, ['dog', 'cat'], 'k')
     # show_bboxes(fig.axes, anchors * bbox_scale, ['0', '1', '2', '3', '4'])
+    # 使用 MultiBoxTarget() 标注锚框的类别和偏移量
     labels = contrib.nd.MultiBoxTarget(anchors.expand_dims(axis=0), ground_truth.expand_dims(axis=0), nd.zeros((1, 3, 5)))
     # 返回的结果有三项
     print("labels.shape=", len(labels))
