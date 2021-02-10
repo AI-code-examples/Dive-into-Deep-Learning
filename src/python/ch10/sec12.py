@@ -219,11 +219,12 @@ def attention_model(attention_size):
 
 def attention_forward(model, enc_states, dec_states):
     # 注意力模型的前向计算
+    # 将解码器隐藏状态广播到和编码器隐藏状态形状相同后进行连结
     dec_states = nd.broadcast_axis(dec_states.expand_dims(0), axis=0, size=enc_states.shape[0])
     enc_and_dec_states = nd.concat(enc_states, dec_states, dim=2)
-    e = model(enc_and_dec_states)
-    alpha = nd.softmax(e, axis=0)
-    return (alpha * enc_states).sum(axis=0)
+    e = model(enc_and_dec_states)  # 形状为（时间步数，批量大小，1）
+    alpha = nd.softmax(e, axis=0)  # 在时间步维度做 Softmax 运算
+    return (alpha * enc_states).sum(axis=0)  # 返回背景变量
 
 
 def process_one_seq(seq_tokens, all_tokens, all_seqs, max_seq_len):
@@ -251,7 +252,7 @@ def read_data(max_seq_len):
         in_seq, out_seq = line.rstrip().split('\t')
         in_seq_tokens, out_seq_tokens = in_seq.split(' '), out_seq.split(' ')
         if max(len(in_seq_tokens), len(out_seq_tokens)) > max_seq_len - 1:
-            continue
+            continue    # 如果加上 EOS 后长于 max_seq_len，则忽略掉这个样本
             pass
         process_one_seq(in_seq_tokens, in_tokens, in_seqs, max_seq_len)
         process_one_seq(out_seq_tokens, out_tokens, out_seqs, max_seq_len)
