@@ -15,6 +15,7 @@
 @小结：
 """
 import random
+from abc import ABC
 
 from d2l import mxnet as d2l
 from mxnet import nd, np, npx, autograd
@@ -47,17 +48,18 @@ def main():
 
     engs = ['go .', 'i lost .', "he\'s calm .", "i\'m home ."]
     fras = ['va !', "j\'ai perdu .", 'il est calme .', 'je suis che moi .']
+    translation, dec_attention_weight_seq = None, None
     for eng, fra in zip(engs, fras):
         translation, dec_attention_weight_seq = d2l.predict_seq2seq(net, eng, src_vocab, tgt_vocab, num_steps, device, True)
         print(f'{eng} => {translation}, bleu {d2l.bleu(translation, fra, k=2):.3f}')
 
     attention_weights = np.concatenate([step[0][0][0] for step in dec_attention_weight_seq], 0).reshape((1, 1, -1, num_steps))
-    # +1 是为也包含序列末端的令牌
+    # +1 是为也包含序列末端的标记
     d2l.show_heatmaps(attention_weights[:, :, :, :len(engs[-1].split()) + 1], xlabel='Keys positions', ylabel='Query positions')
     pass
 
 
-class AttentionDecoder(d2l.Decoder):
+class AttentionDecoder(d2l.Decoder, ABC):
     """The base attention-based decoder interface."""
 
     def __init__(self, **kwargs):
@@ -81,19 +83,28 @@ class Seq2SeqAttentionDecoder(AttentionDecoder):
         # 'outputs' shape: ('num_steps', 'batch_size', 'num_hiddens')
         # 'hidden_state[0]' shape: ('num_layers', 'batch_size', 'num_hiddens')
         outputs, hidden_state = enc_outputs
-        return (outputs.swapaxes(0, 1), hidden_state, enc_valid_lens)
+        return outputs.swapaxes(0, 1), hidden_state, enc_valid_lens
 
     def forward(self, X, state):
+        # enc_outputs: 编码器在所有时间步下的最终层隐藏状态（作为注意力的键和值）
+        # hidden_state: 编码器的最后一个时间步的所有层的隐藏状态（用于初始化解码器的隐藏状态）
+        # enc_valid_lens: 编码器的有效长度（排除在注意力池化中填充的标记）
         enc_outputs, hidden_state, enc_valid_lens = state
+        # 'X' shape: ('num_steps', 'batch_size', 'embed_size')
         X = self.embedding(X).swapaxes(0, 1)
         outputs, self._attention_weights = [], []
         for x in X:
+            # 'query' shape: ('batch_size', 1, 'num_hiddens')
             query = np.expand_dims(hidden_state[0][-1], axis=1)
+            # 'context' shape: ('batch_size', 1, 'num_hiddens')
             context = self.attention(query, enc_outputs, enc_outputs, enc_valid_lens)
+            # Concatenate on the feature dimension
             x = np.concatenate((context, np.expand_dims(x, axis=1)), axis=-1)
+            # 'x' shape: (1, 'batch_size', 'embed_size'+'num_hiddens')
             out, hidden_state = self.rnn(x.swapaxes(0, 1), hidden_state)
             outputs.append(out)
             self._attention_weights.append(self.attention.attention_weights)
+        # 'outputs' shape: ('num_steps', 'batch_size', 'vocab_size')
         outputs = self.dense(np.concatenate(outputs, axis=0))
         return outputs.swapaxes(0, 1), [enc_outputs, hidden_state, enc_valid_lens]
 
