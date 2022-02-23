@@ -8,7 +8,7 @@
 @Version: v0.1
 @License: (C)Copyright 2020-2022, zYx.Tom
 @Reference  :   《动手学深度学习》
-@Desc       :   2.1. 数据操作 → 2.1.1. 入门
+@Desc       :   2.1.数据操作→2.1.1.入门
 ==================================================
 """
 import torch
