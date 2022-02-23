@@ -1,20 +1,17 @@
-# -*- encoding: utf-8 -*-    
 """
-@Author     :   zYx.Tom
-@Contact    :   526614962@qq.com
-@site       :   https://zhuyuanxiang.github.io
----------------------------
-@Software   :   PyCharm
-@Project    :   Dive-into-Deep-Learning
-@File       :   sec0202.py
-@Version    :   v0.1
-@Time       :   2020-12-27 9:25
-@License    :   (C)Copyright 2018-2020, zYx.Tom
+=================================================
+@path   : Dive-into-Deep-Learning -> sec020105.py
+@IDE    : PyCharm
+@Author : zYx.Tom, 526614962@qq.com
+@Date   : 2022-02-23 15:44
+@Version: v0.1
+@License: (C)Copyright 2020-2022, zYx.Tom
 @Reference  :   《动手学深度学习》
-@Desc       :   Sec 2.2.5 运算的内存开销
-@理解：
+@Desc       :   2.1.数据操作→2.1.5.节省内存
+==================================================
 """
-from mxnet import nd, ndarray
+import torch
+from datetime import datetime
 from tools import beep_end, show_subtitle
 
 
@@ -35,7 +32,7 @@ def memory_assign(X, Y):
     X+Y 需要占用临时内存，再拷贝到 Z
     """
     show_subtitle("memory assign")
-    Z = Y.zeros_like()
+    Z = torch.zeros_like(Y)
     before = id(Z)
     Z[:] = X + Y
     after = id(Z)
@@ -50,9 +47,9 @@ def memory_fast_assign(X, Y):
     X+Y 不需要占用临时内存，直接输出到 Z
     """
     show_subtitle("memory fast assign")
-    Z = Y.zeros_like()
+    Z = torch.zeros_like(Y)
     before = id(Z)
-    nd.elemwise_add(X, Y, out=Z)
+    Z[:] = X + Y
     after = id(Z)
     print("before=\t", before)
     print("after=\t", after)
@@ -74,9 +71,10 @@ def memory_direct_assign(X, Y):
     pass
 
 
-def main():
-    X = (nd.arange(12)).reshape((3, 4))
-    Y = nd.array([[2, 1, 4, 3], [1, 2, 3, 4], [4, 3, 2, 1]])
+def main(name):
+    print(f'Hi, {name}', datetime.now())
+    X = (torch.arange(12)).reshape((3, 4))
+    Y = torch.tensor([[2, 1, 4, 3], [1, 2, 3, 4], [4, 3, 2, 1]])
     memory_change(X, Y)
     memory_assign(X, Y)
     memory_fast_assign(X, Y)
@@ -85,9 +83,7 @@ def main():
 
 
 # ----------------------------------------------------------------------
-
-
-if __name__ == '__main__':
-    # 运行结束的提醒
-    main()
+if __name__ == "__main__":
+    __author__ = 'zYx.Tom'
+    main(__author__)
     beep_end()
